@@ -1,0 +1,11 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="dtMauiAPp.AuthenticationPage"
+             xmlns:viewmodel="clr-namespace:dtMauiAPp.ViewModels"
+               x:DataType="viewmodel:AuthenticationPageViewModel">
+
+    <VerticalStackLayout Margin="20">
+        <Button Text="Register" Command="{Binding GoToRegisterCommand}" TextColor="White" Background="Black" CornerRadius="0" Margin="0,0,0,10"></Button>
+        <Button Text="Login" Command="{Binding GoToLoginCommand}" TextColor="White" Background="Black" CornerRadius="0"></Button>
+    </VerticalStackLayout>
+</ContentPage>
