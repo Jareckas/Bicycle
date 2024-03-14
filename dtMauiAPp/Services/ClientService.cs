@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace dtMauiAPp.Services
@@ -19,14 +20,25 @@ namespace dtMauiAPp.Services
 
         public async Task Register(RegisterModel model)
         {
+            // Validate password format
+            if (!Regex.IsMatch(model.Password, @"^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s]).{8,}$"))
+            {
+                await Shell.Current.DisplayAlert("Error", "Password must contain at least one capital letter, one number, and one symbol.", "Ok");
+                return;
+            }
+
             var httpClient = httpClientFactory.CreateClient("custom-httpclient");
             var result = await httpClient.PostAsJsonAsync("/register", model);
-            if(result.IsSuccessStatusCode)
+            if (result.IsSuccessStatusCode)
             {
-                await Shell.Current.DisplayAlert("Alert", "Succesfully Register", "Ok");
+                await Shell.Current.DisplayAlert("Alert", "Successfully Registered", "Ok");
             }
-            await Shell.Current.DisplayAlert("Alert", result.ReasonPhrase, "Ok");
+            else
+            {
+                await Shell.Current.DisplayAlert("Alert", result.ReasonPhrase, "Ok");
+            }
         }
+
         public async Task<bool> Login(LoginModel model)
         {
             var httpClient = httpClientFactory.CreateClient("custom-httpclient");

@@ -47,6 +47,8 @@ namespace dtMauiAPp
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<WeatherForecastPage>();
             builder.Services.AddSingleton<WeatherForecastViewModel>();
+            builder.Services.AddSingleton<SettingsPage>();
+            builder.Services.AddSingleton<SettingsViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();
