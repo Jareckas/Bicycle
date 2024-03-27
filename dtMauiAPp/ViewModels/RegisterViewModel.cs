@@ -29,7 +29,7 @@ namespace dtMauiAPp.ViewModels
         [RelayCommand]
         public async Task GoBack()
         {
-            await Shell.Current.GoToAsync("//AuthenticationPage");
+            await Shell.Current.GoToAsync(nameof(AuthenticationPage));
         }
     }
 }

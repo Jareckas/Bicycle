@@ -1,8 +1,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="dtMauiAPp.Views.SettingsPage"
+             xmlns:view="clr-namespace:dtMauiAPp.Views"
              xmlns:viewmodel="clr-namespace:dtMauiAPp.ViewModels"
-               x:DataType="viewmodel:SettingsViewModel">
+             Title="Settings"
+             x:DataType="viewmodel:SettingsViewModel"
+             Shell.TabBarIsVisible="True">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -15,49 +18,10 @@
         <!-- Your existing content (95% of page height) -->
         <VerticalStackLayout Grid.Row="0" Margin="20">
             <Label x:Name="TextLabel" Grid.Column="0" Text="SETTINGS" FontSize="30" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
-            
+
             <!-- Implement the user changing setting-->
-            <Button Text="Change Username" />
-            
-            <HorizontalStackLayout Spacing="20">
-                <!-- Add your settings content here -->
-                <Label Text="Dark Mode" VerticalOptions="Center" />
-                <Switch IsToggled="{Binding IsDarkModeEnabled}" VerticalOptions="Center" />
-            </HorizontalStackLayout>
+            <Button Text="Change Username" Clicked="OnUsernameChangeClicked" />
         </VerticalStackLayout>
 
-        <!-- Tab bar -->
-        <Grid Grid.Row="1" BackgroundColor="#878787">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <!-- Home -->
-                <ColumnDefinition Width="*" />
-                <!-- Settings -->
-            </Grid.ColumnDefinitions>
-
-            <!-- Home button -->
-            <Button Grid.Column="0"
-                 Text="Home"
-                 Command="{Binding HomeCommand}"
-                 BackgroundColor="Transparent"
-                 BorderColor="Transparent"
-                 BorderWidth="0"
-                 Margin="0"
-                 Padding="0"
-                 HorizontalOptions="FillAndExpand"
-                 VerticalOptions="FillAndExpand"/>
-
-            <!-- Settings button -->
-            <Button Grid.Column="1"
-                 Text="Settings"
-                 Command="{Binding SettingsCommand}"
-                 BackgroundColor="Transparent"
-                 BorderColor="Transparent"
-                 BorderWidth="0"
-                 Margin="0"
-                 Padding="0"
-                 HorizontalOptions="FillAndExpand"
-                 VerticalOptions="FillAndExpand"/>
-        </Grid>
     </Grid>
 </ContentPage>

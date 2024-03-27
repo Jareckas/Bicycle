@@ -1,6 +1,8 @@
 ﻿using dtMauiAPp.Models;
+using Microsoft.Maui.ApplicationModel.Communication;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -28,10 +30,13 @@ namespace dtMauiAPp.Services
             }
 
             var httpClient = httpClientFactory.CreateClient("custom-httpclient");
+
             var result = await httpClient.PostAsJsonAsync("/register", model);
             if (result.IsSuccessStatusCode)
             {
-                await Shell.Current.DisplayAlert("Alert", "Successfully Registered", "Ok");
+                await CreateSettingsEntryForUser(model.Email);
+
+                await Shell.Current.DisplayAlert("Alert", "Successfully Registered", "Ok");       
             }
             else
             {
@@ -39,9 +44,25 @@ namespace dtMauiAPp.Services
             }
         }
 
+        private async Task CreateSettingsEntryForUser(string email)
+        {
+            try
+            {
+                var httpClient = httpClientFactory.CreateClient("custom-httpclient");
+                var response = await httpClient.PostAsync("/Settings/SettingsEntry?email=" + email, null);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                Console.WriteLine($"Error creating settings entry: {ex.Message}");
+            }
+        }
+
         public async Task<bool> Login(LoginModel model)
         {
             var httpClient = httpClientFactory.CreateClient("custom-httpclient");
+
             var result = await httpClient.PostAsJsonAsync("/login", model);
 
             if (result.IsSuccessStatusCode)
@@ -74,6 +95,66 @@ namespace dtMauiAPp.Services
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var result = await httpClient.GetFromJsonAsync<WeatherForecast[]>("/WeatherForecast");
             return result!;
+        }
+
+        public async Task UpdateUsernameAsync(string newUsername)
+        {
+            try
+            {
+                var serializedLoginResponseInStorage = await SecureStorage.Default.GetAsync("Authentication");
+                string token = JsonSerializer.Deserialize<LoginResponse>(serializedLoginResponseInStorage)!.AccessToken!;
+
+                var httpClient = httpClientFactory.CreateClient("custom-httpclient");
+                var updateUsernameModel = new { NewUsername = newUsername };
+
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                var result = await httpClient.PostAsJsonAsync("/Settings/UpdateUsername", updateUsernameModel);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    await Shell.Current.DisplayAlert("Success", "Username updated successfully.", "OK");
+                }
+                else
+                {
+                    // Failed to update username
+                    await Shell.Current.DisplayAlert("Error", "Failed to update username.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                await Shell.Current.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+            }
+        }
+
+        public async Task<string> GetUsernameFromDatabase()
+        {
+            try
+            {
+                var serializedLoginResponseInStorage = await SecureStorage.Default.GetAsync("Authentication");
+                string token = JsonSerializer.Deserialize<LoginResponse>(serializedLoginResponseInStorage)!.AccessToken!;
+                if (serializedLoginResponseInStorage != null)
+                {
+                    var loginResponse = JsonSerializer.Deserialize<LoginResponse>(serializedLoginResponseInStorage);
+                    if (loginResponse != null)
+                    {
+                        var httpClient = httpClientFactory.CreateClient("custom-httpclient");
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                        var result = await httpClient.GetAsync("/Settings/GetUsername");
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var username = await result.Content.ReadAsStringAsync();
+                            return username;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                Console.WriteLine($"An error occurred while fetching username: {ex.Message}");
+            }
+            return null;
         }
     }
 }

@@ -257,6 +257,7 @@ namespace dtWebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
         }
     }
 }

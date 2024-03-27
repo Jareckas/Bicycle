@@ -1,17 +1,32 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="dtMauiAPp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localViewModels="clr-namespace:dtMauiAPp.ViewModels"
     xmlns:local="clr-namespace:dtMauiAPp"
     xmlns:localViews="clr-namespace:dtMauiAPp.Views"
     Shell.FlyoutBehavior="Disabled"
+    xmlns:simpleShell ="clr-namespace:SimpleToolkit.SimpleShell;assembly=SimpleToolkit.SimpleShell"
     Title="dtMauiAPp">
 
-    <ShellContent
-        Title="Authentication"
-        ContentTemplate="{DataTemplate local:AuthenticationPage}"
-        Route="AuthenticationPage" />
+    <TabBar
+        x:Name="TabBar"
+        Route="TabBar"
+        >
 
+        <Tab 
+            Title="Home">
+            <ShellContent
+                Title="Home"
+                ContentTemplate="{DataTemplate localViews:MainPage}" />
+        </Tab>
+        <Tab
+            Title="Settings">
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate localViews:SettingsPage}" />
+        </Tab>
+
+    </TabBar>
 
 </Shell>

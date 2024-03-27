@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿using dtMauiAPp.ViewModels;
+using Microsoft.Maui.Controls;
 
 namespace dtMauiAPp
 {
@@ -8,7 +9,11 @@ namespace dtMauiAPp
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            var appShell = new AppShell();
+            MainPage = appShell;
+
+            var authenticationPageViewModel = new AuthenticationPageViewModel();
+            appShell.Navigation.PushAsync(new AuthenticationPage(authenticationPageViewModel));
         }
     }
 }

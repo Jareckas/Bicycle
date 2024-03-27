@@ -2,7 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="dtMauiAPp.AuthenticationPage"
              xmlns:viewmodel="clr-namespace:dtMauiAPp.ViewModels"
-               x:DataType="viewmodel:AuthenticationPageViewModel">
+               x:DataType="viewmodel:AuthenticationPageViewModel"
+             Shell.TabBarIsVisible="False">
 
     <VerticalStackLayout Margin="20">
         <Button Text="Register" Command="{Binding GoToRegisterCommand}" TextColor="White" Background="Black" CornerRadius="0" Margin="0,0,0,10"></Button>

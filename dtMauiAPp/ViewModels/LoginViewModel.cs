@@ -31,16 +31,16 @@ namespace dtMauiAPp.ViewModels
 
             if (loginSuccessful)
             {
-                await mainPageViewModel.GetUserNameFromSecuredStorage();
+                await mainPageViewModel.GetUserNameFromDatabase();
                 await Shell.Current.GoToAsync("MainPage");
-            }   
+            }
         }
 
 
         [RelayCommand]
         public async Task GoBack()
         {
-            await Shell.Current.GoToAsync("//AuthenticationPage");
+            await Shell.Current.GoToAsync(nameof(AuthenticationPage));
         }
     }
 }

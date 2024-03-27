@@ -2,6 +2,8 @@
 using dtMauiAPp.ViewModels;
 using dtMauiAPp.Services;
 using dtMauiAPp.Views;
+using CommunityToolkit;
+
 namespace dtMauiAPp
 {
     public static class MauiProgram
@@ -28,13 +30,14 @@ namespace dtMauiAPp
             });
             builder.Services.AddHttpClient("custom-httpclient", httpClient =>
             {
-                var baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "https://10.0.2.2:7154" : "https://localhost:7154";
+                var baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "https://10.0.2.2:7154" : "https://10.0.2.2:7154";
                 httpClient.BaseAddress = new Uri(baseAddress);
             }).ConfigureHttpMessageHandlerBuilder(configBuilder =>
             {
                 var platformMessageHandler = configBuilder.Services.GetRequiredService<IPlatformHttpMessageHandler>();
                 configBuilder.PrimaryHandler = platformMessageHandler.GetHttpMessageHandler();
             });
+            builder.Services.AddSingleton<AppShell>();
 
             builder.Services.AddSingleton<ClientService>();
             builder.Services.AddSingleton<AuthenticationPage>();

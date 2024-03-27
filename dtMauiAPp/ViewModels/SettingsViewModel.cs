@@ -2,15 +2,21 @@
 using dtMauiAPp.Services;
 using CommunityToolkit.Mvvm.Input;
 using dtMauiAPp.Views;
+using Microsoft.Extensions.Logging;
 
 namespace dtMauiAPp.ViewModels
 {
     public partial class SettingsViewModel : ObservableObject
     {
+        private readonly MainPageViewModel mainPageViewModel;
         private readonly ClientService clientService;
-        public SettingsViewModel(ClientService clientService)
+        private readonly ILogger<SettingsViewModel> logger;
+
+        public SettingsViewModel(ClientService clientService, ILogger<SettingsViewModel> logger, MainPageViewModel mainPageViewModel)
         {
             this.clientService = clientService;
+            this.logger = logger;
+            this.mainPageViewModel = mainPageViewModel;
         }
 
         // Property to track if dark mode is enabled
@@ -22,17 +28,22 @@ namespace dtMauiAPp.ViewModels
         }
 
         [RelayCommand]
-        private async Task Home()
+        public async Task ChangeUsernameAsync(string newUsername)
         {
-            // Navigate to HomePage
-            await Shell.Current.GoToAsync("..");
-        }
+            try
+            {
+                // Call a method in your ClientService to update the username in the database
+                await clientService.UpdateUsernameAsync(newUsername);
 
-        [RelayCommand]
-        private async Task Settings()
-        {
-            // Navigate to SettingsPage
-            await Shell.Current.GoToAsync(nameof(SettingsPage));
+                await mainPageViewModel.GetUserNameFromDatabase();
+
+                logger.LogInformation("Username changed successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to change username.");
+                // Handle the exception appropriately
+            }
         }
     }
 }

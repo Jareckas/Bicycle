@@ -5,7 +5,8 @@
              Title="RegisterPage"
              xmlns:model ="clr-namespace:dtMauiAPp.Models"
              xmlns:viewmodel="clr-namespace:dtMauiAPp.ViewModels"
-             x:DataType="viewmodel:RegisterViewModel">
+             x:DataType="viewmodel:RegisterViewModel"
+             Shell.TabBarIsVisible="False">
 
             <VerticalStackLayout Margin="20">
                 <Image Source="dotnet_bot.png" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" />
